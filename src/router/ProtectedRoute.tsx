@@ -5,7 +5,7 @@ type ProtectedRouteProps = {
   children: ReactElement;
 };
 
-const isAuthenticated = true; // авторизация
+export const isAuthenticated = false; // авторизация
 
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   if (!isAuthenticated) {
