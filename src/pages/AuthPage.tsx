@@ -1,6 +1,8 @@
 // pages/AuthPage.tsx
 
 import { useState } from "react";
+import { useLoginByCredentialsMutation } from "../shared/api/authApi.ts";
+import { useNavigate } from "react-router-dom";
 
 type Credentials = {
   login: string;
@@ -13,10 +15,33 @@ export const AuthPage = () => {
     password: "emilyspass",
   });
 
+  const [loginByCredentials, { isLoading, isError }] =
+    useLoginByCredentialsMutation();
+
+  const navigate = useNavigate();
+
   const handleClick = (credentials: Credentials) => {
-    // хук авторизации
+    loginByCredentials({
+      username: credentials.login,
+      password: credentials.password,
+      expiresInMins: 1,
+    })
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        localStorage.setItem("accessToken", res.accessToken);
+        localStorage.setItem("refreshToken", res.refreshToken);
+        setTimeout(() => {
+          navigate("/");
+        }, 300);
+      })
+      .catch((err) => {
+        console.log({ err });
+      });
 
     console.log({ credentials });
+    console.log({ isLoading });
+    console.log({ isError });
   };
 
   return (
