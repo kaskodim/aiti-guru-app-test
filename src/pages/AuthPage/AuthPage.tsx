@@ -13,8 +13,8 @@ type Credentials = {
 
 export const AuthPage = () => {
   const [credentials, setCredentials] = useState<Credentials>({
-    login: "emily",
-    // login: "emilys",
+    // login: "emily",
+    login: "emilys",
     password: "emilyspass",
   });
 

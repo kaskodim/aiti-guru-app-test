@@ -1,7 +1,7 @@
 import type { SVGProps } from "react";
 import Logo from "./assets/logo.svg?react";
 
-export const icons = {
+const icons = {
   logo: Logo,
 } as const;
 
