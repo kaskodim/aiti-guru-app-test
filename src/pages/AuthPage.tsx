@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { useLoginByCredentialsMutation } from "@/shared/api/authApi.ts";
+import { Icon } from "@/shared/ui/Icon/Icon.tsx";
 
 type Credentials = {
   login: string;
@@ -44,13 +45,18 @@ export const AuthPage = () => {
   return (
     <div
       style={{
+        width: "100%",
+        height: "100vh",
         display: "flex",
         gap: 3,
         alignItems: "center",
         flexDirection: "column",
+        justifyContent: "center",
       }}
     >
-      <div></div>
+      <div>
+        <Icon name={"logo"} width="30" height="30" />
+      </div>
       <div>Добро пожаловать!</div>
       <div>Пожалуйста авторизуйтесь</div>
       {/*==================================================*/}
