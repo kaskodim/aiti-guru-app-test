@@ -1,8 +1,9 @@
 // pages/AuthPage.tsx
 
 import { useState } from "react";
-import { useLoginByCredentialsMutation } from "../shared/api/authApi.ts";
+
 import { useNavigate } from "react-router-dom";
+import { useLoginByCredentialsMutation } from "@/shared/api/authApi.ts";
 
 type Credentials = {
   login: string;
@@ -49,7 +50,7 @@ export const AuthPage = () => {
         flexDirection: "column",
       }}
     >
-      <div>иконка</div>
+      <div></div>
       <div>Добро пожаловать!</div>
       <div>Пожалуйста авторизуйтесь</div>
       {/*==================================================*/}
