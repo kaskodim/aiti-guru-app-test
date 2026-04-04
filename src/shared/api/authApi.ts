@@ -1,6 +1,8 @@
 // src/shared/api/authApi.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+//TODO разобрать типы
+
 type LoginRequest = {
   username: string;
   password: string;
@@ -20,8 +22,6 @@ export type LoginResponse = {
 };
 
 // ========================================
-
-// src/shared/api/authApi.ts
 
 type Hair = {
   color: string;
