@@ -6,12 +6,8 @@ type ProtectedRouteProps = {
   children: ReactElement;
 };
 
-export const isAuthenticated = false; // авторизация
-
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { data, isLoading, error } = useGetCurrentUserQuery();
-
-  console.log({ data, isLoading, error });
+  const { isLoading, error } = useGetCurrentUserQuery();
   const navigate = useNavigate();
 
   if (isLoading) {

@@ -11,12 +11,12 @@ type Credentials = {
 
 export const AuthPage = () => {
   const [credentials, setCredentials] = useState<Credentials>({
-    login: "emilys",
+    login: "emily",
+    // login: "emilys",
     password: "emilyspass",
   });
 
-  const [loginByCredentials, { isLoading, isError }] =
-    useLoginByCredentialsMutation();
+  const [loginByCredentials] = useLoginByCredentialsMutation();
 
   const navigate = useNavigate();
 
@@ -38,10 +38,6 @@ export const AuthPage = () => {
       .catch((err) => {
         console.log({ err });
       });
-
-    console.log({ credentials });
-    console.log({ isLoading });
-    console.log({ isError });
   };
 
   return (

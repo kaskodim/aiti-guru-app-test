@@ -42,15 +42,12 @@ export const authApi = createApi({
           password,
           expiresInMins,
         },
-        // credentials здесь лучше не ставить из‑за CORS
-        // credentials: "include",
       }),
     }),
     getCurrentUser: builder.query<any, void>({
       query: () => ({
         url: "/me",
         method: "GET",
-        // credentials: "include", // лучше не использовать из‑за CORS
       }),
       keepUnusedDataFor: 0,
     }),
