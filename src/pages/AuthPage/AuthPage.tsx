@@ -5,8 +5,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLoginByCredentialsMutation } from "@/shared/api/authApi.ts";
 
-import "./AuthPage.styles.css";
-import { Icon } from "@/shared/ui/Icon/Icon.tsx";
+import { AuthLogo } from "@/pages/AuthPage/AuthLogo/AuthLogo.tsx";
+
+import styles from "./AuthPage.module.css";
+import { AuthTitle } from "@/pages/AuthPage/AuthTitle/AuthTitle.tsx";
 
 type Credentials = {
   login: string;
@@ -45,19 +47,14 @@ export const AuthPage = () => {
   };
 
   return (
-    <div className="container">
-      <div className="form-outer">
-        <div className="form-border">
-          <div className="form">
+    <div className={styles.container}>
+      <div className={styles.formOuter}>
+        <div className={styles.formBorder}>
+          <div className={styles.form}>
             {/*================= Иконка =================================*/}
-            <div>
-              <Icon name={"logo"} size={30} />
-            </div>
+            <AuthLogo />
             {/*================== Приветствие ===============================*/}
-            <div>
-              <div>Добро пожаловать!</div>
-              <div>Пожалуйста авторизуйтесь</div>
-            </div>
+            <AuthTitle />
             {/*=================== Форма ==================================*/}
             <div>
               <div>Логин</div>

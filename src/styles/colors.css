@@ -1,3 +1,13 @@
 :root {
-    --color-background: #f9f9f9;
+  /* фон приложения */
+  --color-bg-page: #f9f9f9;
+  --color-bg-surface: #ffffff;
+
+  /* серые для градиентов логотипа */
+  --color-logo-shell-top: #efefef;
+  --color-logo-inner-top: #f3f3f3;
+  --color-logo-inner-bottom: #ffffff;
+
+
+  --color-text-primary: #232323;
 }

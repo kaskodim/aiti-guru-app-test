@@ -1,0 +1,21 @@
+.container {
+  text-align: center;
+}
+
+.title {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 110%;
+  margin: 0 0 12px 0;
+}
+
+.subTitle {
+  font-size: 18px;
+  line-height: 150%;
+  margin: 0;
+  background: linear-gradient(#bababa 0%, #d2d2d2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
