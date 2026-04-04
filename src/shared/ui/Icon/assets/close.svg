@@ -1,6 +1,6 @@
-<svg viewBox="0 0 16.0184 18.0081" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16.018372" height="18.008087" fill="none" customFrame="#000000">
+<svg viewBox="0 0 16.0184 18.0081" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16.018372" height="18.008087" fill="none">
 	<g id="Group 1">
-		<path id="Line 2" d="M0 0L21.2603 0" stroke="rgb(201,201,201)" stroke-linecap="round" stroke-width="2.000000" transform="matrix(0.658505,0.752577,-0.752577,0.658505,1.01428,1.00404)" />
-		<path id="Line 3" d="M0 0L21.2603 0" stroke="rgb(201,201,201)" stroke-linecap="round" stroke-width="2.000000" transform="matrix(-0.658505,0.752577,0.752577,0.658505,15.004,1.00404)" />
+		<path id="Line 2" d="M0 0L21.2603 0" stroke="currentColor" stroke-linecap="round" stroke-width="2.000000" transform="matrix(0.658505,0.752577,-0.752577,0.658505,1.01428,1.00404)" />
+		<path id="Line 3" d="M0 0L21.2603 0" stroke="currentColor" stroke-linecap="round" stroke-width="2.000000" transform="matrix(-0.658505,0.752577,0.752577,0.658505,15.004,1.00404)" />
 	</g>
 </svg>

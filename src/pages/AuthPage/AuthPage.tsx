@@ -9,6 +9,7 @@ import { AuthLogo } from "@/pages/AuthPage/AuthLogo/AuthLogo.tsx";
 
 import styles from "./AuthPage.module.css";
 import { AuthTitle } from "@/pages/AuthPage/AuthTitle/AuthTitle.tsx";
+import { AuthForm } from "@/pages/AuthPage/AuthForm/AuthForm.tsx";
 
 type Credentials = {
   login: string;
@@ -16,11 +17,17 @@ type Credentials = {
 };
 
 export const AuthPage = () => {
-  const [credentials, setCredentials] = useState<Credentials>({
-    // login: "emily",
-    login: "emilys",
-    password: "emilyspass",
-  });
+  const [credentials, setCredentials] = useState<Credentials>(
+    //   {
+    //   // login: "emily",
+    //   login: "emilys",
+    //   password: "emilyspass",
+    // }
+    {
+      login: "",
+      password: "",
+    },
+  );
 
   const [loginByCredentials] = useLoginByCredentialsMutation();
 
@@ -56,34 +63,11 @@ export const AuthPage = () => {
             {/*================== Приветствие ===============================*/}
             <AuthTitle />
             {/*=================== Форма ==================================*/}
-            <div>
-              <div>Логин</div>
-              <input
-                value={credentials.login}
-                onChange={(e) =>
-                  setCredentials((prev) => ({ ...prev, login: e.target.value }))
-                }
-              />
-              <div>Пароль</div>
-              <input
-                value={credentials.password}
-                type={"password"}
-                onChange={(e) =>
-                  setCredentials((prev) => ({
-                    ...prev,
-                    password: e.target.value,
-                  }))
-                }
-              />
-
-              <div style={{ display: "flex", gap: 3 }}>
-                <div>чекбокс</div>
-                <div>запомнить данные</div>
-              </div>
-
-              <button onClick={() => handleClick(credentials)}>Войти</button>
-              <div>или</div>
-            </div>
+            <AuthForm
+              credentials={credentials}
+              onChange={setCredentials}
+              onSubmit={() => handleClick(credentials)}
+            />
 
             {/*==================== Подвал ==============================*/}
 

@@ -1,21 +1,30 @@
 import type { ComponentType, HTMLAttributes, SVGProps } from "react";
 import Logo from "./assets/logo.svg?react";
 import EyeOff from "./assets/eyeOff.svg?react";
+import UserIcon from "./assets/userIcon.svg?react";
+import Close from "./assets/close.svg?react";
+import Lock from "./assets/lock.svg?react";
 import { EyeOutlined } from "@ant-design/icons";
 
-const icons = {
+const svgIcons = {
   logo: Logo,
-  eye: EyeOutlined,
+  userIcon: UserIcon,
+  close: Close,
   eyeOff: EyeOff,
+  lock: Lock,
 } as const;
 
-export type IconName = keyof typeof icons;
+const antIcons = {
+  eye: EyeOutlined,
+} as const;
+
+export type IconName = keyof typeof svgIcons | keyof typeof antIcons;
 
 type CommonIconProps = {
   name: IconName;
   size?: number;
   color?: string;
-} & HTMLAttributes<HTMLElement>; // без SVGProps
+} & HTMLAttributes<HTMLElement>;
 
 export const Icon = ({
   name,
@@ -24,22 +33,23 @@ export const Icon = ({
   style,
   ...props
 }: CommonIconProps) => {
-  const IconComponent = icons[name];
+  if (name in svgIcons) {
+    const Svg = svgIcons[name as keyof typeof svgIcons] as ComponentType<
+      SVGProps<SVGSVGElement>
+    >;
 
-  if (name === "logo") {
-    // SVG `?react`
-    const Svg = IconComponent as ComponentType<SVGProps<SVGSVGElement>>;
     return (
       <Svg
         width={size}
         height={size}
         color={color}
         {...(props as SVGProps<SVGSVGElement>)}
+        style={style}
       />
     );
   }
 
-  // ant-design icon
-  const AntIcon = IconComponent as typeof EyeOutlined;
+  const AntIcon = antIcons[name as keyof typeof antIcons] as typeof EyeOutlined;
+
   return <AntIcon style={{ fontSize: size, color, ...style }} {...props} />;
 };

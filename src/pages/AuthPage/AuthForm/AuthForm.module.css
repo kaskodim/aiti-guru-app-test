@@ -1,0 +1,39 @@
+.containerInputs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.containerInput {
+  display: flex;
+  flex-direction: column;
+  row-gap: 6px;
+}
+
+.title {
+  font-size: 18px;
+  line-height: 150%;
+}
+
+.loginInput {
+  font-size: 18px;
+  line-height: 150%;
+  min-width: 400px;
+}
+
+.loginInput,
+.passwordInput {
+  height: 55px;
+  padding: 14px 16px;
+  border-radius: 12px;
+}
+
+.clearButton {
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
