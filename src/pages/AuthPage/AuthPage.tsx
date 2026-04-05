@@ -40,6 +40,10 @@ export const AuthPage = () => {
           localStorage.setItem("accessToken", res.accessToken);
           localStorage.setItem("refreshToken", res.refreshToken);
         } else {
+          // TODO нужна ли здесь очистка, или где она будет?
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+
           sessionStorage.setItem("accessToken", res.accessToken);
           sessionStorage.setItem("refreshToken", res.refreshToken);
         }
