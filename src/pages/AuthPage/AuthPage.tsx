@@ -10,6 +10,7 @@ import { AuthLogo } from "@/pages/AuthPage/AuthLogo/AuthLogo.tsx";
 import styles from "./AuthPage.module.css";
 import { AuthTitle } from "@/pages/AuthPage/AuthTitle/AuthTitle.tsx";
 import { AuthForm } from "@/pages/AuthPage/AuthForm/AuthForm.tsx";
+import { AuthNoAccountHint } from "@/pages/AuthPage/AuthNoAccountHint/AuthNoAccountHint.tsx";
 
 type Credentials = {
   login: string;
@@ -104,9 +105,7 @@ export const AuthPage = () => {
             {/*==================== Подвал ==============================*/}
 
             <div className={styles.footerWrapper}>
-              <div>
-                Нет аккаунта? <a href="">Создать</a>
-              </div>
+              <AuthNoAccountHint />
             </div>
 
             {/*  =============================================================*/}
