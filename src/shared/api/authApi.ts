@@ -1,6 +1,108 @@
 // src/shared/api/authApi.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+import type {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+} from "@reduxjs/toolkit/query";
+
+const baseQuery = fetchBaseQuery({
+  baseUrl: "https://dummyjson.com/auth",
+  prepareHeaders: (headers) => {
+    const token =
+      localStorage.getItem("accessToken") ??
+      sessionStorage.getItem("accessToken");
+
+    if (token) {
+      headers.set("Authorization", `Bearer ${token}`);
+    }
+
+    return headers;
+  },
+});
+
+const baseQueryWithReauth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
+  // 1. обычный запрос
+  let result = await baseQuery(args, api, extraOptions);
+
+  // 2. если accessToken умер
+  if (result.error && result.error.status === 401) {
+    console.log("🔁 access token умер");
+
+    const refreshToken =
+      localStorage.getItem("refreshToken") ??
+      sessionStorage.getItem("refreshToken");
+
+    if (!refreshToken) {
+      console.log("❌ нет refresh токена");
+      return result;
+    }
+
+    // 3. пробуем обновить токен
+    const refreshResult = await baseQuery(
+      {
+        url: "/refresh",
+        method: "POST",
+        body: { refreshToken },
+      },
+      api,
+      extraOptions,
+    );
+
+    if (refreshResult.data) {
+      const data = refreshResult.data as { accessToken: string };
+
+      console.log("✅ токен обновлён");
+
+      // 4. сохраняем новый accessToken
+      localStorage.setItem("accessToken", data.accessToken);
+
+      // 5. повторяем оригинальный запрос
+      result = await baseQuery(args, api, extraOptions);
+    } else {
+      console.log("❌ refresh не сработал");
+
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+    }
+  }
+
+  return result;
+};
+
+export const authApi = createApi({
+  reducerPath: "authApi",
+  baseQuery: baseQueryWithReauth,
+  endpoints: (builder) => ({
+    loginByCredentials: builder.mutation<LoginResponse, LoginRequest>({
+      query: ({ username, password, expiresInMins }) => ({
+        url: "/login",
+        method: "POST",
+        body: {
+          username,
+          password,
+          expiresInMins,
+        },
+      }),
+    }),
+    getCurrentUser: builder.query<CurrentUser, void>({
+      query: () => ({
+        url: "/me",
+        method: "GET",
+      }),
+      keepUnusedDataFor: 0,
+    }),
+  }),
+});
+
+export const { useLoginByCredentialsMutation, useGetCurrentUserQuery } =
+  authApi;
+
 //TODO разобрать типы
 
 export type AuthCredentials = {
@@ -99,44 +201,3 @@ export type CurrentUser = {
   crypto: Crypto;
   role: string;
 };
-// =========================================
-
-export const authApi = createApi({
-  reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "https://dummyjson.com/auth",
-    prepareHeaders: (headers) => {
-      const token =
-        localStorage.getItem("accessToken") ??
-        sessionStorage.getItem("accessToken");
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
-
-  endpoints: (builder) => ({
-    loginByCredentials: builder.mutation<LoginResponse, LoginRequest>({
-      query: ({ username, password, expiresInMins }) => ({
-        url: "/login",
-        method: "POST",
-        body: {
-          username,
-          password,
-          expiresInMins,
-        },
-      }),
-    }),
-    getCurrentUser: builder.query<CurrentUser, void>({
-      query: () => ({
-        url: "/me",
-        method: "GET",
-      }),
-      keepUnusedDataFor: 0,
-    }),
-  }),
-});
-
-export const { useLoginByCredentialsMutation, useGetCurrentUserQuery } =
-  authApi;
