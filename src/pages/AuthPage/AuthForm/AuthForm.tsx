@@ -13,12 +13,16 @@ type AuthFormProps = {
   credentials: Credentials;
   onChange: (next: Credentials) => void;
   onSubmit: () => void;
+  rememberMe: boolean;
+  onToggleRemember: (value: boolean) => void;
 };
 
 export const AuthForm = ({
   credentials,
   onChange,
   onSubmit,
+  rememberMe,
+  onToggleRemember,
 }: AuthFormProps) => {
   return (
     <div>
@@ -91,9 +95,13 @@ export const AuthForm = ({
         </div>
       </div>
 
-      <div style={{ display: "flex", gap: 3 }}>
-        <Checkbox>Запомнить данные</Checkbox>
-      </div>
+      <Checkbox
+        className={styles.checkbox}
+        checked={rememberMe}
+        onChange={(e) => onToggleRemember(e.target.checked)}
+      >
+        Запомнить данные
+      </Checkbox>
 
       <button onClick={onSubmit}>Войти</button>
       <div>или</div>

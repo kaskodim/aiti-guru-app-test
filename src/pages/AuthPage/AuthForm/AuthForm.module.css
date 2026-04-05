@@ -15,14 +15,12 @@
   line-height: 150%;
 }
 
-.loginInput {
-  font-size: 18px;
-  line-height: 150%;
-  min-width: 400px;
-}
 
 .loginInput,
 .passwordInput {
+  font-size: 18px;
+  line-height: 150%;
+  min-width: 400px;
   height: 55px;
   padding: 14px 16px;
   border-radius: 12px;
@@ -36,4 +34,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.checkbox {
+  color: #9c9c9c;
+  padding: 20px 0;
+  user-select: none;
+  display: flex;
 }

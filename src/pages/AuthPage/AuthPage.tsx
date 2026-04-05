@@ -17,17 +17,33 @@ type Credentials = {
 };
 
 export const AuthPage = () => {
-  const [credentials, setCredentials] = useState<Credentials>(
-    //   {
-    //   // login: "emily",
-    //   login: "emilys",
-    //   password: "emilyspass",
-    // }
-    {
-      login: "",
-      password: "",
-    },
-  );
+  const [credentials, setCredentials] = useState<Credentials>(() => {
+    const saved = localStorage.getItem("rememberCredentials");
+    if (saved) {
+      try {
+        return JSON.parse(saved) as Credentials;
+      } catch {
+        return { login: "", password: "" };
+      }
+    }
+    return { login: "", password: "" };
+  });
+
+  const [rememberMe, setRememberMe] = useState<boolean>(() => {
+    return localStorage.getItem("rememberMe") === "true";
+  });
+
+  // const [credentials, setCredentials] = useState<Credentials>(
+  //   //   {
+  //   //   // login: "emily",
+  //   //   login: "emilys",
+  //   //   password: "emilyspass",
+  //   // }
+  //   {
+  //     login: "",
+  //     password: "",
+  //   },
+  // );
 
   const [loginByCredentials] = useLoginByCredentialsMutation();
 
@@ -44,6 +60,18 @@ export const AuthPage = () => {
         console.log(res);
         localStorage.setItem("accessToken", res.accessToken);
         localStorage.setItem("refreshToken", res.refreshToken);
+
+        if (rememberMe) {
+          localStorage.setItem(
+            "rememberCredentials",
+            JSON.stringify(credentials),
+          );
+          localStorage.setItem("rememberMe", "true");
+        } else {
+          localStorage.removeItem("rememberCredentials");
+          localStorage.removeItem("rememberMe");
+        }
+
         setTimeout(() => {
           navigate("/");
         }, 300);
@@ -67,6 +95,8 @@ export const AuthPage = () => {
               credentials={credentials}
               onChange={setCredentials}
               onSubmit={() => handleClick(credentials)}
+              rememberMe={rememberMe}
+              onToggleRemember={setRememberMe}
             />
 
             {/*==================== Подвал ==============================*/}
