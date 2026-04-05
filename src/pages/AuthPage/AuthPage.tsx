@@ -17,21 +17,12 @@ type Credentials = {
 };
 
 export const AuthPage = () => {
-  const [credentials, setCredentials] = useState<Credentials>(() => {
-    const saved = localStorage.getItem("rememberCredentials");
-    if (saved) {
-      try {
-        return JSON.parse(saved) as Credentials;
-      } catch {
-        return { login: "", password: "" };
-      }
-    }
-    return { login: "", password: "" };
+  const [credentials, setCredentials] = useState<Credentials>({
+    login: "",
+    password: "",
   });
 
-  const [rememberMe, setRememberMe] = useState<boolean>(() => {
-    return localStorage.getItem("rememberMe") === "true";
-  });
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
 
   const [error, setError] = useState<string>("");
 
@@ -65,20 +56,14 @@ export const AuthPage = () => {
       .then((res) => {
         console.log(res);
         setError("");
-        localStorage.setItem("accessToken", res.accessToken);
-        localStorage.setItem("refreshToken", res.refreshToken);
 
         if (rememberMe) {
-          localStorage.setItem(
-            "rememberCredentials",
-            JSON.stringify(credentials),
-          );
-          localStorage.setItem("rememberMe", "true");
+          localStorage.setItem("accessToken", res.accessToken);
+          localStorage.setItem("refreshToken", res.refreshToken);
         } else {
-          localStorage.removeItem("rememberCredentials");
-          localStorage.removeItem("rememberMe");
+          sessionStorage.setItem("accessToken", res.accessToken);
+          sessionStorage.setItem("refreshToken", res.refreshToken);
         }
-
         setTimeout(() => {
           navigate("/");
         }, 300);
