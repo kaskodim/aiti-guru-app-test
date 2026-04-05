@@ -1,47 +1,70 @@
-import styles from "./AuthForm.module.css";
 import { Input } from "antd";
 import { Checkbox } from "antd";
 import { Icon } from "@/shared/ui/Icon/Icon.tsx";
 import { AppButton } from "@/shared/ui/Button/Button.tsx";
+import styles from "./AuthForm.module.css";
+import type { SyntheticEvent } from "react";
 
-type Credentials = {
+type AuthCredentials = {
   login: string;
   password: string;
 };
 
 type AuthFormProps = {
-  credentials: Credentials;
-  onChange: (next: Credentials) => void;
+  credentials: AuthCredentials;
+  onCredentialsChange: (next: AuthCredentials) => void;
   onSubmit: () => void;
   rememberMe: boolean;
-  onToggleRemember: (value: boolean) => void;
-  loading: boolean;
-  error: string;
+  onRememberMeChange: (value: boolean) => void;
+  loading?: boolean;
+  error?: string;
 };
 
 export const AuthForm = ({
   credentials,
-  onChange,
+  onCredentialsChange,
   onSubmit,
   rememberMe,
-  onToggleRemember,
-  loading,
+  onRememberMeChange,
+  loading = false,
   error,
 }: AuthFormProps) => {
-  const isDisabled = !credentials.login || !credentials.password;
+  const isDisabled = !credentials.login.trim() || !credentials.password.trim();
+
+  const handleLoginChange = (value: string) => {
+    onCredentialsChange({ ...credentials, login: value });
+  };
+
+  const handlePasswordChange = (value: string) => {
+    onCredentialsChange({ ...credentials, password: value });
+  };
+
+  const handleClearLogin = () => {
+    onCredentialsChange({ ...credentials, login: "" });
+  };
+
+  const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!isDisabled && !loading) {
+      onSubmit();
+    }
+  };
 
   return (
-    <div>
-      <div className={styles.containerInputs}>
-        <div className={styles.containerInput}>
-          <div className={styles.title}>Логин</div>
+    <form onSubmit={handleSubmit}>
+      <div className={styles.formFields}>
+        <div className={styles.formField}>
+          <label htmlFor="login" className={styles.label}>
+            Логин
+          </label>
 
           <Input
             name="login"
             id="login"
-            className={styles.loginInput}
+            className={styles.input}
             placeholder="Введите логин"
-            status={error ? "error" : ""}
+            status={error ? "error" : undefined}
             prefix={
               <Icon
                 name="userIcon"
@@ -53,8 +76,9 @@ export const AuthForm = ({
               credentials.login ? (
                 <button
                   type="button"
-                  className={styles.clearButton}
-                  onClick={() => onChange({ ...credentials, login: "" })}
+                  className={styles.inputClearButton}
+                  onClick={handleClearLogin}
+                  aria-label="Очистить логин"
                 >
                   <Icon
                     name="close"
@@ -65,21 +89,20 @@ export const AuthForm = ({
               ) : null
             }
             value={credentials.login}
-            onChange={(e) =>
-              onChange({ ...credentials, login: e.target.value })
-            }
+            onChange={(e) => handleLoginChange(e.target.value)}
           />
         </div>
 
-        <div className={styles.containerInput}>
-          <div className={styles.title}>Пароль</div>
+        <div className={styles.formField}>
+          <label htmlFor="password" className={styles.label}>
+            Пароль
+          </label>
 
           <Input.Password
             name="password"
             id="password"
-            className={styles.passwordInput}
-            status={error ? "error" : ""}
-            size="large"
+            className={styles.input}
+            status={error ? "error" : undefined}
             placeholder="Введите пароль"
             prefix={
               <Icon name="lock" size={24} color={"var(--color-icon-input)"} />
@@ -96,38 +119,40 @@ export const AuthForm = ({
               )
             }
             value={credentials.password}
-            onChange={(e) =>
-              onChange({ ...credentials, password: e.target.value })
-            }
+            onChange={(e) => handlePasswordChange(e.target.value)}
           />
         </div>
 
-        {error ? <span className={styles.error}> {error} </span> : ""}
+        {error && (
+          <span role="alert" className={styles.formError}>
+            {error}
+          </span>
+        )}
       </div>
 
       <Checkbox
-        className={styles.checkbox}
+        className={styles.formCheckbox}
         checked={rememberMe}
-        onChange={(e) => onToggleRemember(e.target.checked)}
+        onChange={(e) => onRememberMeChange(e.target.checked)}
       >
         Запомнить данные
       </Checkbox>
 
-      <div className={styles.button}>
+      <div className={styles.submitButton}>
         <AppButton
+          htmlType="submit"
           type={isDisabled ? "default" : "primary"}
           fullWidth
-          onClick={onSubmit}
           disabled={isDisabled}
           loading={loading}
         >
-          {loading ? "" : "Войти"}
+          Войти
         </AppButton>
       </div>
 
-      <div className={styles.divider}>
+      <div className={styles.formDivider}>
         <span>или</span>
       </div>
-    </div>
+    </form>
   );
 };

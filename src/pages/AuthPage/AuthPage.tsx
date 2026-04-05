@@ -83,25 +83,30 @@ export const AuthPage = () => {
         <div className={styles.formBorder}>
           <div className={styles.form}>
             {/*================= Иконка =================================*/}
-            <AuthLogo />
+            <div className={styles.logoWrapper}>
+              <AuthLogo />
+            </div>
             {/*================== Приветствие ===============================*/}
-            <AuthTitle />
+            <div className={styles.titleWrapper}>
+              <AuthTitle />
+            </div>
             {/*=================== Форма ==================================*/}
             <AuthForm
               credentials={credentials}
-              onChange={setCredentials}
+              onCredentialsChange={setCredentials}
               onSubmit={() => handleClick(credentials)}
               rememberMe={rememberMe}
-              onToggleRemember={setRememberMe}
+              onRememberMeChange={setRememberMe}
               loading={isLoading}
               error={error}
             />
 
             {/*==================== Подвал ==============================*/}
 
-            <div style={{ display: "flex", gap: 3 }}>
-              <div>Нет аккаунта?</div>
-              <a href={""}>Создать</a>
+            <div className={styles.footerWrapper}>
+              <div>
+                Нет аккаунта? <a href="">Создать</a>
+              </div>
             </div>
 
             {/*  =============================================================*/}

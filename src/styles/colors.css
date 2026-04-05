@@ -10,4 +10,9 @@
 
   --color-text-primary: #232323;
   --color-icon-input: #c9c9c9;
+
+  --color-text-secondary: #9c9c9c;
+  --color-text-muted: #b1b1b1;
+  --color-border-divider: #ededed;
+  --color-text-error: #ff4d4f;
 }

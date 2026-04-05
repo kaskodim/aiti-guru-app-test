@@ -1,31 +1,29 @@
-.containerInputs {
+.formFields {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.containerInput {
+.formField {
   display: flex;
   flex-direction: column;
-  row-gap: 6px;
+  gap: 6px;
 }
 
-.title {
+.label {
   font-size: 18px;
   line-height: 150%;
 }
 
-.loginInput,
-.passwordInput {
+.input {
   font-size: 18px;
   line-height: 150%;
-  min-width: 400px;
   height: 55px;
   padding: 14px 16px;
   border-radius: 12px;
 }
 
-.clearButton {
+.inputClearButton {
   border: none;
   padding: 0;
   background: transparent;
@@ -35,13 +33,13 @@
   justify-content: center;
 }
 
-.error {
-  color: red;
+.formError {
+  color: var(--color-text-error);
   position: relative;
 }
 
-.checkbox {
-  color: #9c9c9c;
+.formCheckbox {
+  color: var(--color-text-secondary);
   padding: 20px 0;
   user-select: none;
   display: flex;
@@ -49,24 +47,24 @@
   line-height: 150%;
 }
 
-.button {
+.submitButton {
   width: 100%;
 }
 
-.divider {
+.formDivider {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #b1b1b1;
+  color: var(--color-text-muted);
   font-size: 16px;
   line-height: 150%;
-  padding: 16px 0 0 0;
+  padding-top: 16px;
 }
 
-.divider::before,
-.divider::after {
+.formDivider::before,
+.formDivider::after {
   content: "";
   flex: 1;
   height: 1px;
-  background-color: #ededed;
+  background-color: var(--color-border-divider);
 }
