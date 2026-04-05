@@ -3,6 +3,7 @@ import styles from "./AuthForm.module.css";
 import { Input } from "antd";
 import { Checkbox } from "antd";
 import { Icon } from "@/shared/ui/Icon/Icon.tsx";
+import { AppButton } from "@/shared/ui/Button/Button.tsx";
 
 type Credentials = {
   login: string;
@@ -103,8 +104,15 @@ export const AuthForm = ({
         Запомнить данные
       </Checkbox>
 
-      <button onClick={onSubmit}>Войти</button>
-      <div>или</div>
+      <div className={styles.button}>
+        <AppButton type={"primary"} fullWidth onClick={onSubmit}>
+          Войти
+        </AppButton>
+      </div>
+
+      <div className={styles.divider}>
+        <span>или</span>
+      </div>
     </div>
   );
 };

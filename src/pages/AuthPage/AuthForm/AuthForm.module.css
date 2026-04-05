@@ -15,7 +15,6 @@
   line-height: 150%;
 }
 
-
 .loginInput,
 .passwordInput {
   font-size: 18px;
@@ -41,4 +40,26 @@
   padding: 20px 0;
   user-select: none;
   display: flex;
+}
+
+.button {
+  width: 100%;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #b1b1b1;
+  font-size: 16px;
+  line-height: 150%;
+  padding: 16px 0 0 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: #ededed;
 }
