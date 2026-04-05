@@ -16,6 +16,7 @@ type AuthFormProps = {
   rememberMe: boolean;
   onToggleRemember: (value: boolean) => void;
   loading: boolean;
+  error: string;
 };
 
 export const AuthForm = ({
@@ -25,6 +26,7 @@ export const AuthForm = ({
   rememberMe,
   onToggleRemember,
   loading,
+  error,
 }: AuthFormProps) => {
   const isDisabled = !credentials.login || !credentials.password;
 
@@ -39,6 +41,7 @@ export const AuthForm = ({
             id="login"
             className={styles.loginInput}
             placeholder="Введите логин"
+            status={error ? "error" : ""}
             prefix={
               <Icon
                 name="userIcon"
@@ -75,6 +78,7 @@ export const AuthForm = ({
             name="password"
             id="password"
             className={styles.passwordInput}
+            status={error ? "error" : ""}
             size="large"
             placeholder="Введите пароль"
             prefix={
@@ -97,6 +101,8 @@ export const AuthForm = ({
             }
           />
         </div>
+
+        {error ? <span className={styles.error}> {error} </span> : ""}
       </div>
 
       <Checkbox

@@ -33,6 +33,8 @@ export const AuthPage = () => {
     return localStorage.getItem("rememberMe") === "true";
   });
 
+  const [error, setError] = useState<string>("");
+
   // const [credentials, setCredentials] = useState<Credentials>(
   //   //   {
   //   //   // login: "emily",
@@ -47,9 +49,13 @@ export const AuthPage = () => {
 
   const [loginByCredentials, { isLoading }] = useLoginByCredentialsMutation();
 
+  // console.log(error);
+
   const navigate = useNavigate();
 
   const handleClick = (credentials: Credentials) => {
+    setError("");
+
     loginByCredentials({
       username: credentials.login,
       password: credentials.password,
@@ -58,6 +64,7 @@ export const AuthPage = () => {
       .unwrap()
       .then((res) => {
         console.log(res);
+        setError("");
         localStorage.setItem("accessToken", res.accessToken);
         localStorage.setItem("refreshToken", res.refreshToken);
 
@@ -76,8 +83,12 @@ export const AuthPage = () => {
           navigate("/");
         }, 300);
       })
-      .catch((err) => {
-        console.log({ err });
+      .catch((err: { status: number; data?: { message?: string } }) => {
+        if (err.status === 400) {
+          setError("Неверный логин или пароль");
+        } else {
+          console.log("Ошибка, попробуйте позже", err);
+        }
       });
   };
 
@@ -98,6 +109,7 @@ export const AuthPage = () => {
               rememberMe={rememberMe}
               onToggleRemember={setRememberMe}
               loading={isLoading}
+              error={error}
             />
 
             {/*==================== Подвал ==============================*/}

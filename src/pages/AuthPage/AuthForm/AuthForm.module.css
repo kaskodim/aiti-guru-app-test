@@ -35,11 +35,21 @@
   justify-content: center;
 }
 
+
+.error {
+  color: red;
+  position: relative;
+}
+
+
+
 .checkbox {
   color: #9c9c9c;
   padding: 20px 0;
   user-select: none;
   display: flex;
+  font-size: 16px;
+  line-height: 150%;
 }
 
 .button {
