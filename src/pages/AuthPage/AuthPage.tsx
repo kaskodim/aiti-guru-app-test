@@ -28,6 +28,7 @@ export const AuthPage = () => {
     loginByCredentials({
       username: credentials.username,
       password: credentials.password,
+      // TODO что за число 1 + рефреш токен обработать
       expiresInMins: 1,
     })
       .unwrap()
