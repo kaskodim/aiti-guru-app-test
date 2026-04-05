@@ -45,7 +45,7 @@ export const AuthPage = () => {
   //   },
   // );
 
-  const [loginByCredentials] = useLoginByCredentialsMutation();
+  const [loginByCredentials, { isLoading }] = useLoginByCredentialsMutation();
 
   const navigate = useNavigate();
 
@@ -97,6 +97,7 @@ export const AuthPage = () => {
               onSubmit={() => handleClick(credentials)}
               rememberMe={rememberMe}
               onToggleRemember={setRememberMe}
+              loading={isLoading}
             />
 
             {/*==================== Подвал ==============================*/}

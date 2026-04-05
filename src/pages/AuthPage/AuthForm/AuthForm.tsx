@@ -1,4 +1,3 @@
-// pages/AuthPage/AuthForm/AuthForm.tsx
 import styles from "./AuthForm.module.css";
 import { Input } from "antd";
 import { Checkbox } from "antd";
@@ -16,6 +15,7 @@ type AuthFormProps = {
   onSubmit: () => void;
   rememberMe: boolean;
   onToggleRemember: (value: boolean) => void;
+  loading: boolean;
 };
 
 export const AuthForm = ({
@@ -24,7 +24,10 @@ export const AuthForm = ({
   onSubmit,
   rememberMe,
   onToggleRemember,
+  loading,
 }: AuthFormProps) => {
+  const isDisabled = !credentials.login || !credentials.password;
+
   return (
     <div>
       <div className={styles.containerInputs}>
@@ -105,8 +108,14 @@ export const AuthForm = ({
       </Checkbox>
 
       <div className={styles.button}>
-        <AppButton type={"primary"} fullWidth onClick={onSubmit}>
-          Войти
+        <AppButton
+          type={isDisabled ? "default" : "primary"}
+          fullWidth
+          onClick={onSubmit}
+          disabled={isDisabled}
+          loading={loading}
+        >
+          {loading ? "" : "Войти"}
         </AppButton>
       </div>
 
