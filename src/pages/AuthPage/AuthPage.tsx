@@ -1,55 +1,32 @@
-// pages/AuthPage.tsx
-
 import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
-import { useLoginByCredentialsMutation } from "@/shared/api/authApi.ts";
-
+import {
+  type AuthCredentials,
+  useLoginByCredentialsMutation,
+} from "@/shared/api/authApi.ts";
 import { AuthLogo } from "@/pages/AuthPage/AuthLogo/AuthLogo.tsx";
-
-import styles from "./AuthPage.module.css";
 import { AuthTitle } from "@/pages/AuthPage/AuthTitle/AuthTitle.tsx";
 import { AuthForm } from "@/pages/AuthPage/AuthForm/AuthForm.tsx";
 import { AuthNoAccountHint } from "@/pages/AuthPage/AuthNoAccountHint/AuthNoAccountHint.tsx";
-
-type Credentials = {
-  login: string;
-  password: string;
-};
+import styles from "./AuthPage.module.css";
 
 export const AuthPage = () => {
-  const [credentials, setCredentials] = useState<Credentials>({
-    login: "",
+  const [credentials, setCredentials] = useState<AuthCredentials>({
+    username: "",
     password: "",
   });
-
   const [rememberMe, setRememberMe] = useState<boolean>(false);
-
   const [error, setError] = useState<string>("");
-
-  // const [credentials, setCredentials] = useState<Credentials>(
-  //   //   {
-  //   //   // login: "emily",
-  //   //   login: "emilys",
-  //   //   password: "emilyspass",
-  //   // }
-  //   {
-  //     login: "",
-  //     password: "",
-  //   },
-  // );
 
   const [loginByCredentials, { isLoading }] = useLoginByCredentialsMutation();
 
-  // console.log(error);
-
   const navigate = useNavigate();
 
-  const handleClick = (credentials: Credentials) => {
+  const handleClick = (credentials: AuthCredentials) => {
     setError("");
 
     loginByCredentials({
-      username: credentials.login,
+      username: credentials.username,
       password: credentials.password,
       expiresInMins: 1,
     })
@@ -83,15 +60,12 @@ export const AuthPage = () => {
       <div className={styles.formOuter}>
         <div className={styles.formBorder}>
           <div className={styles.form}>
-            {/*================= Иконка =================================*/}
             <div className={styles.logoWrapper}>
               <AuthLogo />
             </div>
-            {/*================== Приветствие ===============================*/}
             <div className={styles.titleWrapper}>
               <AuthTitle />
             </div>
-            {/*=================== Форма ==================================*/}
             <AuthForm
               credentials={credentials}
               onCredentialsChange={setCredentials}
@@ -101,14 +75,9 @@ export const AuthPage = () => {
               loading={isLoading}
               error={error}
             />
-
-            {/*==================== Подвал ==============================*/}
-
             <div className={styles.footerWrapper}>
               <AuthNoAccountHint />
             </div>
-
-            {/*  =============================================================*/}
           </div>
         </div>
       </div>

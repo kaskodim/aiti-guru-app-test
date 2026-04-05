@@ -3,9 +3,12 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 //TODO разобрать типы
 
-type LoginRequest = {
+export type AuthCredentials = {
   username: string;
   password: string;
+};
+
+type LoginRequest = AuthCredentials & {
   expiresInMins: number;
 };
 

@@ -1,14 +1,11 @@
+import type { SyntheticEvent } from "react";
 import { Input } from "antd";
 import { Checkbox } from "antd";
 import { Icon } from "@/shared/ui/Icon/Icon.tsx";
 import { AppButton } from "@/shared/ui/Button/Button.tsx";
-import styles from "./AuthForm.module.css";
-import type { SyntheticEvent } from "react";
 
-type AuthCredentials = {
-  login: string;
-  password: string;
-};
+import styles from "./AuthForm.module.css";
+import type { AuthCredentials } from "@/shared/api/authApi.ts";
 
 type AuthFormProps = {
   credentials: AuthCredentials;
@@ -29,10 +26,11 @@ export const AuthForm = ({
   loading = false,
   error,
 }: AuthFormProps) => {
-  const isDisabled = !credentials.login.trim() || !credentials.password.trim();
+  const isDisabled =
+    !credentials.username.trim() || !credentials.password.trim();
 
   const handleLoginChange = (value: string) => {
-    onCredentialsChange({ ...credentials, login: value });
+    onCredentialsChange({ ...credentials, username: value });
   };
 
   const handlePasswordChange = (value: string) => {
@@ -40,7 +38,7 @@ export const AuthForm = ({
   };
 
   const handleClearLogin = () => {
-    onCredentialsChange({ ...credentials, login: "" });
+    onCredentialsChange({ ...credentials, username: "" });
   };
 
   const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
@@ -73,7 +71,7 @@ export const AuthForm = ({
               />
             }
             suffix={
-              credentials.login ? (
+              credentials.username ? (
                 <button
                   type="button"
                   className={styles.inputClearButton}
@@ -88,7 +86,7 @@ export const AuthForm = ({
                 </button>
               ) : null
             }
-            value={credentials.login}
+            value={credentials.username}
             onChange={(e) => handleLoginChange(e.target.value)}
           />
         </div>
