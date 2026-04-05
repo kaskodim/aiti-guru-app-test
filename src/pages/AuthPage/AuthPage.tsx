@@ -42,9 +42,7 @@ export const AuthPage = () => {
           sessionStorage.setItem("accessToken", res.accessToken);
           sessionStorage.setItem("refreshToken", res.refreshToken);
         }
-        setTimeout(() => {
-          navigate("/");
-        }, 300);
+        navigate("/");
       })
       .catch((err: { status: number; data?: { message?: string } }) => {
         if (err.status === 400) {
