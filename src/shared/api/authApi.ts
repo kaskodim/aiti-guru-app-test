@@ -6,13 +6,19 @@ import type {
   FetchArgs,
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query";
+import { ACCESS_TOKEN_TTL_MINUTES, STORAGE_KEYS } from "@/cosnt/const.ts";
+import type {
+  CurrentUser,
+  LoginRequest,
+  LoginResponse,
+} from "@/shared/api/types.ts";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://dummyjson.com/auth",
   prepareHeaders: (headers) => {
     const token =
-      localStorage.getItem("accessToken") ??
-      sessionStorage.getItem("accessToken");
+      localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN) ??
+      sessionStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
 
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
@@ -30,25 +36,20 @@ const baseQueryWithReauth: BaseQueryFn<
   // 1. обычный запрос
   let result = await baseQuery(args, api, extraOptions);
 
-  // 2. если accessToken умер
   if (result.error && result.error.status === 401) {
-    console.log("🔁 access token умер");
-
     const refreshToken =
-      localStorage.getItem("refreshToken") ??
-      sessionStorage.getItem("refreshToken");
+      localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN) ??
+      sessionStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
 
     if (!refreshToken) {
-      console.log("❌ нет refresh токена");
       return result;
     }
 
-    // 3. пробуем обновить токен
     const refreshResult = await baseQuery(
       {
         url: "/refresh",
         method: "POST",
-        body: { refreshToken, expiresInMins: 1 },
+        body: { refreshToken, expiresInMins: ACCESS_TOKEN_TTL_MINUTES },
       },
       api,
       extraOptions,
@@ -60,30 +61,24 @@ const baseQueryWithReauth: BaseQueryFn<
         refreshToken: string;
       };
 
-      console.log("✅ токен обновлён");
+      const isRememberMe =
+        localStorage.getItem(STORAGE_KEYS.REMEMBER_ME) === "true";
 
-      const isRememberMe = localStorage.getItem("rememberMe") === "true";
-
-      // 4. сохраняем новый accessToken
       if (isRememberMe) {
-        localStorage.setItem("accessToken", data.accessToken);
-        localStorage.setItem("refreshToken", data.refreshToken);
+        localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, data.accessToken);
+        localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, data.refreshToken);
       } else {
-        sessionStorage.setItem("accessToken", data.accessToken);
-        sessionStorage.setItem("refreshToken", data.refreshToken);
+        sessionStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, data.accessToken);
+        sessionStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, data.refreshToken);
       }
 
-      // 5. повторяем оригинальный запрос
       result = await baseQuery(args, api, extraOptions);
     } else {
-      console.log("❌ refresh не сработал");
-
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      sessionStorage.removeItem("accessToken");
-      sessionStorage.removeItem("refreshToken");
-      sessionStorage.removeItem("rememberMe");
-
+      localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+      localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+      sessionStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+      sessionStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+      sessionStorage.removeItem(STORAGE_KEYS.REMEMBER_ME);
       // redirect to login page
       window.location.pathname = "/auth";
     }
@@ -97,13 +92,13 @@ export const authApi = createApi({
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
     loginByCredentials: builder.mutation<LoginResponse, LoginRequest>({
-      query: ({ username, password, expiresInMins }) => ({
+      query: ({ username, password }) => ({
         url: "/login",
         method: "POST",
         body: {
           username,
           password,
-          expiresInMins,
+          expiresInMins: ACCESS_TOKEN_TTL_MINUTES,
         },
       }),
     }),
@@ -119,101 +114,3 @@ export const authApi = createApi({
 
 export const { useLoginByCredentialsMutation, useGetCurrentUserQuery } =
   authApi;
-
-//TODO разобрать типы
-export type AuthCredentials = {
-  username: string;
-  password: string;
-};
-
-type LoginRequest = AuthCredentials & {
-  expiresInMins: number;
-};
-
-export type LoginResponse = {
-  accessToken: string;
-  refreshToken: string;
-  id: number;
-  username: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  image: string;
-};
-
-// ========================================
-
-type Hair = {
-  color: string;
-  type: string;
-};
-
-type Coordinates = {
-  lat: number;
-  lng: number;
-};
-
-type Address = {
-  address: string;
-  city: string;
-  state: string;
-  stateCode: string;
-  postalCode: string;
-  coordinates: Coordinates;
-  country: string;
-};
-
-type Bank = {
-  cardExpire: string;
-  cardNumber: string;
-  cardType: string;
-  currency: string;
-  iban: string;
-};
-
-type CompanyAddress = Address;
-
-type Company = {
-  department: string;
-  name: string;
-  title: string;
-  address: CompanyAddress;
-};
-
-type Crypto = {
-  coin: string;
-  wallet: string;
-  network: string;
-};
-
-export type CurrentUser = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  maidenName: string;
-  age: number;
-  gender: string;
-  email: string;
-  phone: string;
-  username: string;
-  password: string;
-  birthDate: string;
-  image: string;
-  bloodGroup: string;
-  height: number;
-  weight: number;
-  eyeColor: string;
-  hair: Hair;
-  ip: string;
-  address: Address;
-  macAddress: string;
-  university: string;
-  bank: Bank;
-  company: Company;
-  ein: string;
-  ssn: string;
-  userAgent: string;
-  crypto: Crypto;
-  role: string;
-};

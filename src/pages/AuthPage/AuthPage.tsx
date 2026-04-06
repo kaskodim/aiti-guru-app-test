@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  type AuthCredentials,
-  useLoginByCredentialsMutation,
-} from "@/shared/api/authApi.ts";
+import { useLoginByCredentialsMutation } from "@/shared/api/authApi.ts";
 import { AuthLogo } from "@/pages/AuthPage/AuthLogo/AuthLogo.tsx";
 import { AuthTitle } from "@/pages/AuthPage/AuthTitle/AuthTitle.tsx";
 import { AuthForm } from "@/pages/AuthPage/AuthForm/AuthForm.tsx";
 import { AuthNoAccountHint } from "@/pages/AuthPage/AuthNoAccountHint/AuthNoAccountHint.tsx";
 import styles from "./AuthPage.module.css";
+import type { AuthCredentials } from "@/shared/api/types.ts";
+import { STORAGE_KEYS } from "@/cosnt/const.ts";
 
 export const AuthPage = () => {
+  // TODO убрать в AuthForm
   const [credentials, setCredentials] = useState<AuthCredentials>({
     username: "",
     password: "",
@@ -28,28 +28,22 @@ export const AuthPage = () => {
     loginByCredentials({
       username: credentials.username,
       password: credentials.password,
-      // TODO что за число 1 + рефреш токен обработать
-      expiresInMins: 1, //
     })
       .unwrap()
       .then((res) => {
-        console.log(res);
-        // setError("");
-
         if (rememberMe) {
-          localStorage.setItem("rememberMe", "true");
+          localStorage.setItem(STORAGE_KEYS.REMEMBER_ME, "true");
 
-          localStorage.setItem("accessToken", res.accessToken);
-          localStorage.setItem("refreshToken", res.refreshToken);
+          localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, res.accessToken);
+          localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, res.refreshToken);
         } else {
-          // TODO нужна ли здесь очистка, или где она будет?
-          localStorage.setItem("rememberMe", "false");
+          localStorage.setItem(STORAGE_KEYS.REMEMBER_ME, "false");
 
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
+          localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+          localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
 
-          sessionStorage.setItem("accessToken", res.accessToken);
-          sessionStorage.setItem("refreshToken", res.refreshToken);
+          sessionStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, res.accessToken);
+          sessionStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, res.refreshToken);
         }
         navigate("/");
       })
@@ -57,7 +51,7 @@ export const AuthPage = () => {
         if (err.status === 400) {
           setError("Неверный логин или пароль");
         } else {
-          console.log("Ошибка, попробуйте позже", err);
+          setError(`Ошибка, попробуйте позже: ${err.data?.message}`);
         }
       });
   };
