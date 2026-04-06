@@ -3,9 +3,8 @@ import { Input } from "antd";
 import { Checkbox } from "antd";
 import { Icon } from "@/shared/ui/Icon/Icon.tsx";
 import { AppButton } from "@/shared/ui/Button/Button.tsx";
-
-import styles from "./AuthForm.module.css";
 import type { AuthCredentials } from "@/shared/api/types.ts";
+import styles from "./AuthForm.module.css";
 
 type AuthFormProps = {
   loading: boolean;

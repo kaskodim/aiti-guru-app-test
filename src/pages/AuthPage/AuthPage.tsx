@@ -5,9 +5,9 @@ import { AuthLogo } from "@/pages/AuthPage/AuthLogo/AuthLogo.tsx";
 import { AuthTitle } from "@/pages/AuthPage/AuthTitle/AuthTitle.tsx";
 import { AuthForm } from "@/pages/AuthPage/AuthForm/AuthForm.tsx";
 import { AuthNoAccountHint } from "@/pages/AuthPage/AuthNoAccountHint/AuthNoAccountHint.tsx";
-import styles from "./AuthPage.module.css";
 import type { AuthCredentials } from "@/shared/api/types.ts";
 import { STORAGE_KEYS } from "@/cosnt/const.ts";
+import styles from "./AuthPage.module.css";
 
 export const AuthPage = () => {
   const [error, setError] = useState<string>("");
