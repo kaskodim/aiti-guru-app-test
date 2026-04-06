@@ -29,18 +29,22 @@ export const AuthPage = () => {
       username: credentials.username,
       password: credentials.password,
       // TODO что за число 1 + рефреш токен обработать
-      expiresInMins: 1,
+      expiresInMins: 1, //
     })
       .unwrap()
       .then((res) => {
         console.log(res);
-        setError("");
+        // setError("");
 
         if (rememberMe) {
+          localStorage.setItem("rememberMe", "true");
+
           localStorage.setItem("accessToken", res.accessToken);
           localStorage.setItem("refreshToken", res.refreshToken);
         } else {
           // TODO нужна ли здесь очистка, или где она будет?
+          localStorage.setItem("rememberMe", "false");
+
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
 

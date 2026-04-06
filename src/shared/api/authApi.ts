@@ -48,19 +48,30 @@ const baseQueryWithReauth: BaseQueryFn<
       {
         url: "/refresh",
         method: "POST",
-        body: { refreshToken },
+        body: { refreshToken, expiresInMins: 1 },
       },
       api,
       extraOptions,
     );
 
     if (refreshResult.data) {
-      const data = refreshResult.data as { accessToken: string };
+      const data = refreshResult.data as {
+        accessToken: string;
+        refreshToken: string;
+      };
 
       console.log("✅ токен обновлён");
 
+      const isRememberMe = localStorage.getItem("rememberMe") === "true";
+
       // 4. сохраняем новый accessToken
-      localStorage.setItem("accessToken", data.accessToken);
+      if (isRememberMe) {
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
+      } else {
+        sessionStorage.setItem("accessToken", data.accessToken);
+        sessionStorage.setItem("refreshToken", data.refreshToken);
+      }
 
       // 5. повторяем оригинальный запрос
       result = await baseQuery(args, api, extraOptions);
@@ -69,6 +80,12 @@ const baseQueryWithReauth: BaseQueryFn<
 
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
+      sessionStorage.removeItem("accessToken");
+      sessionStorage.removeItem("refreshToken");
+      sessionStorage.removeItem("rememberMe");
+
+      // redirect to login page
+      window.location.pathname = "/auth";
     }
   }
 
@@ -104,7 +121,6 @@ export const { useLoginByCredentialsMutation, useGetCurrentUserQuery } =
   authApi;
 
 //TODO разобрать типы
-
 export type AuthCredentials = {
   username: string;
   password: string;
