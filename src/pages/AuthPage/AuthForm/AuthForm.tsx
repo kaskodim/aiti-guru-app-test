@@ -1,51 +1,49 @@
-import type { SyntheticEvent } from "react";
+import { type SyntheticEvent, useState } from "react";
 import { Input } from "antd";
 import { Checkbox } from "antd";
 import { Icon } from "@/shared/ui/Icon/Icon.tsx";
 import { AppButton } from "@/shared/ui/Button/Button.tsx";
 
 import styles from "./AuthForm.module.css";
-import type { AuthCredentials } from "@/shared/api/authApi.ts";
+import type { AuthCredentials } from "@/shared/api/types.ts";
 
 type AuthFormProps = {
-  credentials: AuthCredentials;
-  onCredentialsChange: (next: AuthCredentials) => void;
-  onSubmit: () => void;
-  rememberMe: boolean;
-  onRememberMeChange: (value: boolean) => void;
-  loading?: boolean;
-  error?: string;
+  loading: boolean;
+  error: string;
+  onSubmit: (data: AuthCredentials, rememberMe: boolean) => void;
 };
 
 export const AuthForm = ({
-  credentials,
-  onCredentialsChange,
   onSubmit,
-  rememberMe,
-  onRememberMeChange,
   loading = false,
   error,
 }: AuthFormProps) => {
+  const [credentials, setCredentials] = useState<AuthCredentials>({
+    username: "",
+    password: "",
+  });
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
+
   const isDisabled =
     !credentials.username.trim() || !credentials.password.trim();
 
   const handleLoginChange = (value: string) => {
-    onCredentialsChange({ ...credentials, username: value });
+    setCredentials({ ...credentials, username: value });
   };
 
   const handlePasswordChange = (value: string) => {
-    onCredentialsChange({ ...credentials, password: value });
+    setCredentials({ ...credentials, password: value });
   };
 
   const handleClearLogin = () => {
-    onCredentialsChange({ ...credentials, username: "" });
+    setCredentials({ ...credentials, username: "" });
   };
 
   const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!isDisabled && !loading) {
-      onSubmit();
+      onSubmit(credentials, rememberMe);
     }
   };
 
@@ -131,7 +129,7 @@ export const AuthForm = ({
       <Checkbox
         className={styles.formCheckbox}
         checked={rememberMe}
-        onChange={(e) => onRememberMeChange(e.target.checked)}
+        onChange={(e) => setRememberMe(e.target.checked)}
       >
         Запомнить данные
       </Checkbox>

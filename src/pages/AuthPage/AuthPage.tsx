@@ -10,19 +10,13 @@ import type { AuthCredentials } from "@/shared/api/types.ts";
 import { STORAGE_KEYS } from "@/cosnt/const.ts";
 
 export const AuthPage = () => {
-  // TODO убрать в AuthForm
-  const [credentials, setCredentials] = useState<AuthCredentials>({
-    username: "",
-    password: "",
-  });
-  const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
   const [loginByCredentials, { isLoading }] = useLoginByCredentialsMutation();
 
   const navigate = useNavigate();
 
-  const handleClick = (credentials: AuthCredentials) => {
+  const handleSubmit = (credentials: AuthCredentials, rememberMe: boolean) => {
     setError("");
 
     loginByCredentials({
@@ -68,11 +62,7 @@ export const AuthPage = () => {
               <AuthTitle />
             </div>
             <AuthForm
-              credentials={credentials}
-              onCredentialsChange={setCredentials}
-              onSubmit={() => handleClick(credentials)}
-              rememberMe={rememberMe}
-              onRememberMeChange={setRememberMe}
+              onSubmit={handleSubmit}
               loading={isLoading}
               error={error}
             />
