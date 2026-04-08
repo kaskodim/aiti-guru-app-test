@@ -1,6 +1,7 @@
 import { type SyntheticEvent, useState } from "react";
 import { Input } from "antd";
 import { Checkbox } from "antd";
+import { EyeOutlined } from "@ant-design/icons";
 import { Icon } from "@/shared/ui/Icon/Icon.tsx";
 import { Button } from "antd";
 import type { AuthCredentials } from "@/shared/api/types.ts";
@@ -104,8 +105,7 @@ export const AuthForm = ({
             }
             iconRender={(visible) =>
               visible ? (
-                // TODO использовать иконку из ant
-                <Icon name="eye" size={20} color={"var(--color-icon-input)"} />
+                <EyeOutlined className={styles.inputIcon} />
               ) : (
                 <Icon
                   name="eyeOff"
@@ -137,7 +137,7 @@ export const AuthForm = ({
       <Button
         htmlType="submit"
         type="primary"
-        size={"large"}
+        size="large"
         className={styles.submitButton}
         disabled={isDisabled}
         loading={loading}

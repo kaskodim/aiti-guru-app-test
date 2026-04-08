@@ -33,6 +33,10 @@
   justify-content: center;
 }
 
+.inputIcon {
+  color: var(--color-icon-input);
+}
+
 .formError {
   color: var(--color-text-error);
   position: relative;
