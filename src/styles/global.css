@@ -16,32 +16,3 @@ body {
     BlinkMacSystemFont,
     sans-serif;
 }
-
-.ant-input,
-.ant-input-password,
-.ant-input-affix-wrapper {
-  font-family:
-    "Inter",
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
-}
-
-.ant-checkbox-wrapper {
-  font-family:
-    "Inter",
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
-}
-
-.ant-btn {
-  font-family:
-    "Inter",
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
-}

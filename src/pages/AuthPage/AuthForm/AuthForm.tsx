@@ -2,7 +2,7 @@ import { type SyntheticEvent, useState } from "react";
 import { Input } from "antd";
 import { Checkbox } from "antd";
 import { Icon } from "@/shared/ui/Icon/Icon.tsx";
-import { AppButton } from "@/shared/ui/Button/Button.tsx";
+import { Button } from "antd";
 import type { AuthCredentials } from "@/shared/api/types.ts";
 import styles from "./AuthForm.module.css";
 
@@ -104,6 +104,7 @@ export const AuthForm = ({
             }
             iconRender={(visible) =>
               visible ? (
+                // TODO использовать иконку из ant
                 <Icon name="eye" size={20} color={"var(--color-icon-input)"} />
               ) : (
                 <Icon
@@ -133,17 +134,16 @@ export const AuthForm = ({
         Запомнить данные
       </Checkbox>
 
-      <div className={styles.submitButton}>
-        <AppButton
-          htmlType="submit"
-          type={isDisabled ? "default" : "primary"}
-          fullWidth
-          disabled={isDisabled}
-          loading={loading}
-        >
-          Войти
-        </AppButton>
-      </div>
+      <Button
+        htmlType="submit"
+        type="primary"
+        size={"large"}
+        className={styles.submitButton}
+        disabled={isDisabled}
+        loading={loading}
+      >
+        Войти
+      </Button>
 
       <div className={styles.formDivider}>
         <span>или</span>
