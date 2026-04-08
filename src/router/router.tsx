@@ -1,8 +1,9 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import App from "../App.tsx";
-import { AuthPage } from "../pages/AuthPage.tsx";
-import { ProductsPage } from "../pages/ProductsPage.tsx";
+
 import { ProtectedRoute } from "./ProtectedRoute.tsx";
+import App from "../app/App.tsx";
+import { AuthPage } from "@/pages/AuthPage/AuthPage.tsx";
+import { ProductsPage } from "@/pages/ProductsPage/ProductsPage.tsx";
 
 export const router = createBrowserRouter([
   {

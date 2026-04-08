@@ -1,15 +1,21 @@
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import type { ReactElement } from "react";
+import { useGetCurrentUserQuery } from "../shared/api/authApi.ts";
 
 type ProtectedRouteProps = {
   children: ReactElement;
 };
 
-const isAuthenticated = true; // авторизация
-
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  if (!isAuthenticated) {
-    return <Navigate to="/auth" replace />;
+  const { isLoading, error } = useGetCurrentUserQuery();
+  const navigate = useNavigate();
+
+  if (isLoading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    navigate("/auth");
   }
 
   return children;

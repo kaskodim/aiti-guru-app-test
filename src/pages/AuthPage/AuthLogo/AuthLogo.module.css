@@ -1,0 +1,27 @@
+.logoShell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(
+    var(--color-logo-shell-top) 0%,
+    var(--color-bg-surface) 100%
+  );
+  box-shadow:
+    0 0 0 2px var(--color-bg-surface),
+    0 12px 8px 0 rgba(0, 0, 0, 0.03);
+}
+
+.logoInner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1px;
+  border-radius: 35px;
+  background: linear-gradient(
+    var(--color-logo-inner-top) 0%,
+    var(--color-bg-surface) 100%
+  );
+}

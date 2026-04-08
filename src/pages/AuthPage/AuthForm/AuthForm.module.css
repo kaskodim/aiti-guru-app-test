@@ -1,0 +1,77 @@
+.formFields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 18px;
+  line-height: 150%;
+}
+
+.input {
+  font-size: 18px;
+  line-height: 150%;
+  height: 55px;
+  padding: 14px 16px;
+  border-radius: 12px;
+}
+
+.inputClearButton {
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inputIcon {
+  color: var(--color-icon-input);
+}
+
+.formError {
+  color: var(--color-text-error);
+  position: relative;
+}
+
+.formCheckbox {
+  color: var(--color-text-secondary);
+  padding: 20px 0;
+  user-select: none;
+  display: flex;
+  font-size: 16px;
+  line-height: 150%;
+}
+
+.submitButton {
+  width: 100%;
+  box-shadow:
+    0 8px 10px rgba(54, 122, 255, 0.03),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.08)
+}
+
+.formDivider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-text-muted);
+  font-size: 16px;
+  line-height: 150%;
+  padding-top: 16px;
+}
+
+.formDivider::before,
+.formDivider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border-divider);
+}

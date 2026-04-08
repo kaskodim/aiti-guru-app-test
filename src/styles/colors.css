@@ -1,0 +1,20 @@
+:root {
+  /* фон приложения */
+  --color-bg-page: #f9f9f9;
+  --color-bg-surface: #ffffff;
+
+  --color-primary: #242EDB;
+
+  /* серые для градиентов логотипа */
+  --color-logo-shell-top: #efefef;
+  --color-logo-inner-top: #f3f3f3;
+  --color-logo-inner-bottom: #ffffff;
+
+  --color-text-primary: #232323;
+  --color-icon-input: #c9c9c9;
+
+  --color-text-secondary: #9c9c9c;
+  --color-text-muted: #b1b1b1;
+  --color-border-divider: #ededed;
+  --color-text-error: #ff4d4f;
+}
